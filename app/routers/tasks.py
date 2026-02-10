@@ -28,12 +28,13 @@ def get_task_by_id(
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
-    if not service.get_mine_by_id(db, current_user.id, task_id):
+    task = service.get_mine_by_id(db, current_user.id, task_id)
+    if not task:
         raise HTTPException(
             status_code=404,
             detail="Task not found"
         )
-    return service.get_mine_by_id(db, current_user.id, task_id)
+    return task
 
 @router.patch("/{task_id}", response_model=TaskRead, status_code=status.HTTP_200_OK)
 def task_update(

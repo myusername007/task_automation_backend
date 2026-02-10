@@ -14,7 +14,7 @@ class TaskUpdate(BaseModel):
 class TaskRead(BaseModel):
     id: int
     title: str
-    description: str
+    description: Optional[str] = None
     status: str
     result: Optional[str] = None
     owner_id: int

@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from app.db.models.task import Task
 from app.schemas.task import TaskUpdate
+from typing import Optional
 
 class TaskService:
-    def create(self, db: Session, owner_id: int, title: str, description: str) -> Task:
+    def create(self, db: Session, owner_id: int, title: str, description: Optional[str]) -> Task:
         task = Task(
             owner_id = owner_id,
             title = title,
@@ -15,7 +16,7 @@ class TaskService:
         return task
     
     def list_mine(self, db: Session, owner_id: int, limit=20, offset=0) -> list[Task]:
-        return db.query(Task).filter(Task.owner_id == owner_id).all()
+        return db.query(Task).filter(Task.owner_id == owner_id).offset(offset).limit(limit).all()
     
     def get_mine_by_id(self, db: Session, owner_id: int, task_id: int) -> Task | None:
         return db.query(Task).filter(Task.owner_id == owner_id, Task.id == task_id).first()
