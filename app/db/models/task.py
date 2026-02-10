@@ -17,3 +17,4 @@ class Task(Base):
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="tasks")
+    runs = relationship("TaskRun", back_populates="task")
