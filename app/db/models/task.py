@@ -13,6 +13,7 @@ class Task(Base):
     result: Mapped[str] = mapped_column(String(20), nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, onupdate=datetime.utcnow)
+    is_deleted: Mapped[bool] = mapped_column(default=False)
 
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 

@@ -9,6 +9,9 @@ class TaskRunner:
         """Background job для виконання задачі"""
         db: Session = db_factory()
         
+        task_run = None
+        task = None
+
         try:
             # Отримуємо TaskRun
             task_run = db.query(TaskRun).filter(TaskRun.id == run_id).first()
@@ -31,7 +34,7 @@ class TaskRunner:
             db.commit()
             
             # Імітація роботи
-            time.sleep(30)
+            time.sleep(5)
             
             # Завершення
             task.result = f"processed: {task.title}"
@@ -54,21 +57,25 @@ class TaskRunner:
             db.close()
     
     def is_active_run(self, db: Session, task_id: int) -> bool:
-        """Перевіряє наявність активного запуску"""
         return db.query(TaskRun).filter(
             TaskRun.task_id == task_id,
-            TaskRun.status.in_(["pending", "running"])
+            TaskRun.status.in_(["pending","running"])
         ).first() is not None
     
     def create_run(self, db: Session, task_id: int) -> TaskRun:
+        task = db.query(Task).filter(Task.id == task_id).first()
+        if not task:
+            raise ValueError(f"Task {task_id} not found")
+        if task.status == "running":
+            raise ValueError(f"Task {task_id} is already running")
+            
         active = db.query(TaskRun).filter(
         TaskRun.task_id == task_id,
         TaskRun.status.in_(["pending", "running"])
         ).first()
         if active:
-            return None
+            raise ValueError(f"Task {task_id} already has an active run")
 
-        """Створює новий TaskRun зі статусом pending"""
         task_run = TaskRun(task_id=task_id)  # ← default="pending"
         db.add(task_run)
         db.commit()
