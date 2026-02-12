@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from app.db.models.task import Task
-from app.schemas.task import TaskUpdate
+from app.schemas.task import TaskUpdate, TaskCreate, TaskRead
+from app.db.models.task_run import TaskRun
 from typing import Optional
 
 class TaskService:
@@ -34,6 +35,12 @@ class TaskService:
     def soft_delete_mine(self, db: Session, task: Task) -> None:
         task.is_deleted = True
         db.commit()
+
+    def list_all(self, db: Session, limit=50, offset=0) -> list[Task]:
+        return db.query(Task).offset(offset).limit(limit).all()
+    
+    def list_runs_for_task(self, db: Session, task_id: int) -> list[TaskRun]:
+        return db.query(TaskRun).filter(TaskRun.task_id == task_id).all()
         
     def _base_query(self, db: Session):
         return db.query(Task).filter(Task.is_deleted == False)
