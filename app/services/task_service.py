@@ -16,8 +16,24 @@ class TaskService:
         db.refresh(task)
         return task
     
-    def list_mine(self, db: Session, owner_id: int, limit=20, offset=0) -> list[Task]:
-        return self._base_query(db).filter(Task.owner_id == owner_id).offset(offset).limit(limit).all()
+    def list_mine(
+            self, 
+            db: Session, 
+            owner_id: int, 
+            limit: int = 20, 
+            offset: int = 0,
+            status: str | None = None,
+            order: str = "desc",
+        ) -> list[Task]:
+        
+        query = self._base_query(db).filter(Task.owner_id == owner_id)
+        if status:
+            query = query.filter(Task.status == status)
+        if order == "asc":
+            query = query.order_by(Task.created_at.asc())
+        else: 
+            query = query.order_by(Task.created_at.desc())
+        return query.limit(limit).offset(offset).all()
     
     def get_mine_by_id(self, db: Session, owner_id: int, task_id: int) -> Task | None:
         return self._base_query(db).filter(Task.owner_id == owner_id, Task.id == task_id).first()
@@ -36,8 +52,22 @@ class TaskService:
         task.is_deleted = True
         db.commit()
 
-    def list_all(self, db: Session, limit=50, offset=0) -> list[Task]:
-        return db.query(Task).offset(offset).limit(limit).all()
+    def list_all(
+            self, 
+            db: Session, 
+            limit: int = 50, 
+            offset: int = 0,
+            status: str | None = None,
+            order: str = "desc",
+        ) -> list[Task]:
+        query = self._base_query(db)
+        if status:
+            query = query.filter(Task.status == status)
+        if order == "asc":
+            query = query.order_by(Task.created_at.asc())
+        else: 
+            query = query.order_by(Task.created_at.desc())
+        return query.limit(limit).offset(offset).all()
     
     def list_runs_for_task(self, db: Session, task_id: int) -> list[TaskRun]:
         return db.query(TaskRun).filter(TaskRun.task_id == task_id).all()

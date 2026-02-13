@@ -13,10 +13,17 @@ class UserService:
         return user
     
     def list(self, db: Session) -> list[User]:
-        return db.query(User).all()
+        return self._base_query(db).all()
     
     def get_by_email(self, db: Session, user_email: str) -> User | None:
-        return db.query(User).filter(User.email == user_email).first()
+        return self._base_query(db).filter(User.email == user_email).first()
     
     def get_by_id(self, db: Session, user_id: int) -> User | None:
-        return db.query(User).filter(User.id == user_id).first()
+        return self._base_query(db).filter(User.id == user_id).first()
+    
+    def soft_delete(self, db: Session, user: User) -> None:
+        user.is_deleted = True
+        db.commit()
+
+    def _base_query(self, db: Session):
+        return db.query(User).filter(User.is_deleted == False)

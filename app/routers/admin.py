@@ -16,9 +16,11 @@ def get_all_tasks(
     db: Session = Depends(get_db), 
     current_user = Depends(require_admin),
     limit: int = Query(20, ge=1, le=100),  # default=20, мін=1, макс=100
-    offset: int = Query(0, ge=0)  # default=0, мін=0
+    offset: int = Query(0, ge=0),  # default=0, мін=0
+    status: str | None = None,
+    order: str = "desc",
 ):
-    return task_service.list_all(db, limit=limit, offset=offset)
+    return task_service.list_all(db, limit=limit, offset=offset, status=status, order=order)
 
 @router.get("/tasks/{task_id}/runs", response_model=list[TaskRunRead])
 def get_runs_for_task(
