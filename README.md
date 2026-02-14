@@ -32,7 +32,7 @@ Built with FastAPI, PostgreSQL, SQLAlchemy 2.x, and Docker.
 
 ### Quickstart
 
-`docker-compose up --build`
+Console: `docker-compose up --build`
 
 Swagger: `http://localhost:8000/docs`
 
