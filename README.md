@@ -1,13 +1,15 @@
+# Task Automation
+
 ## Project overview
-Task automation backend - REST API for background tasks manage. 
-Supports authentication with JWT, user roles, task runs history and admin access.
+Task automation backend - REST API for managing background tasks. 
+Supports authentication with JWT, user roles, task runs history, and admin access.
 Implemented on FastAPI + PostgreSQL + Docker.
 
-## Features
-'''
+### Features
+```
 - JWT authentication
 
-- Role-based access (admin / user)
+- Role-based access (admin/user)
 
 - Task CRUD
 
@@ -20,10 +22,10 @@ Implemented on FastAPI + PostgreSQL + Docker.
 - Alembic migrations
 
 - Dockerized setup
-'''
+```
 
-## Tech stack
-'''
+### Tech stack
+```
 - Python 3.11
 
 - FastAPI
@@ -35,54 +37,56 @@ Implemented on FastAPI + PostgreSQL + Docker.
 - Alembic
 
 - Docker
+```
 
-## Quickstart
-'''
+### Quickstart
+```
 docker-compose up --build
 
 Swagger:
 http://localhost:8000/docs
-'''
+```
 
-## Environment variables
-'''
-DATABASE_URL for access to database
+### Environment variables
+```
+DATABASE_URL for access to the database
 
 SECRET_KEY for password hash
 
 ACCESS_TOKEN_EXPIRE_MINUTES for JWT
-'''
+```
 
-## API Flow
-'''
+### API Flow
+```
 1. Register
 
 2. Login
 
 3. Authorize
 
-4. Create task
+4. Create a task
 
 5. Start task
 
 6. Check runs
-'''
+```
 
-## Admin access
-'''
+### Admin access
+```
 is_admin = True
 endpoints /admin/...
+```
 
-## Background processing
-'''
+### Background processing
+```
 POST /task/{id}/start
 TaskRun created
 background job updates status
-'''
+```
 
-## Migrations
-'''
+### Migrations
+```
 docker-compose exec api alembic upgrade head
-'''
+```
 
 
