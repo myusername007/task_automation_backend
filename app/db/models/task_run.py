@@ -1,4 +1,4 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 from datetime import datetime
@@ -14,3 +14,8 @@ class TaskRun(Base):
     finished_at: Mapped[datetime] = mapped_column(nullable=True)
 
     task = relationship("Task", back_populates="runs")
+
+    __table_args__ = (
+    Index("ix_taskrun_task_id", "task_id"),
+    Index("ix_taskrun_status", "status"),
+)

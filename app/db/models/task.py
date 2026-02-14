@@ -1,4 +1,4 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.base import Base
 from datetime import datetime
@@ -19,3 +19,11 @@ class Task(Base):
 
     owner = relationship("User", back_populates="tasks")
     runs = relationship("TaskRun", back_populates="task")
+
+
+    __table_args__ = (
+    Index("ix_task_owner_id", "owner_id"),
+    Index("ix_task_status", "status"),
+    Index("ix_task_created_at", "created_at"),
+)
+
