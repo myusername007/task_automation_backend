@@ -31,17 +31,13 @@ Built with FastAPI, PostgreSQL, SQLAlchemy 2.x, and Docker.
 - Docker
 
 ### Quickstart
-```
-docker-compose up --build
 
-Swagger:
-http://localhost:8000/docs
-```
+`docker-compose up --build`
+
+Swagger: `http://localhost:8000/docs`
 
 ### Environment variables
 ```
-## Environment variables
-
 | Variable | Description |
 |----------|-------------|
 | DATABASE_URL | PostgreSQL connection string |
