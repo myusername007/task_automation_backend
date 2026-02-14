@@ -1,43 +1,34 @@
 # Task Automation
 
 ## Project overview
-Task automation backend - REST API for managing background tasks. 
-Supports authentication with JWT, user roles, task runs history, and admin access.
-Implemented on FastAPI + PostgreSQL + Docker.
+Task Automation Backend — REST API service for managing user tasks
+with background execution support.
+
+The system provides JWT-based authentication, role-based access control,
+task execution history, and administrative monitoring capabilities.
+
+Built with FastAPI, PostgreSQL, SQLAlchemy 2.x, and Docker.
+
 
 ### Features
-```
+
 - JWT authentication
-
 - Role-based access (admin/user)
-
 - Task CRUD
-
 - Background execution
-
 - TaskRun history
-
 - Pagination & filtering
-
 - Alembic migrations
-
 - Dockerized setup
-```
 
 ### Tech stack
-```
+
 - Python 3.11
-
 - FastAPI
-
 - SQLAlchemy 2.x
-
 - PostgreSQL
-
 - Alembic
-
 - Docker
-```
 
 ### Quickstart
 ```
@@ -49,40 +40,45 @@ http://localhost:8000/docs
 
 ### Environment variables
 ```
-DATABASE_URL for access to the database
+## Environment variables
 
-SECRET_KEY for password hash
+| Variable | Description |
+|----------|-------------|
+| DATABASE_URL | PostgreSQL connection string |
+| SECRET_KEY | JWT signing secret |
+| ACCESS_TOKEN_EXPIRE_MINUTES | Token lifetime in minutes |
 
-ACCESS_TOKEN_EXPIRE_MINUTES for JWT
 ```
 
-### API Flow
-```
-1. Register
+### Typical API flow
 
-2. Login
+1. Register a new user via `/auth/register`
+2. Login via `/auth/login`
+3. Authorize using Bearer token in Swagger
+4. Create task via `/tasks`
+5. Start execution via `/tasks/{id}/start`
+6. Monitor status and runs history
 
-3. Authorize
-
-4. Create a task
-
-5. Start task
-
-6. Check runs
-```
 
 ### Admin access
-```
-is_admin = True
-endpoints /admin/...
-```
+
+Users with `is_admin = True` have access to:
+
+- `GET /admin/tasks` — view all tasks
+- `GET /admin/tasks/{id}/runs` — view execution history
+
 
 ### Background processing
-```
-POST /task/{id}/start
-TaskRun created
-background job updates status
-```
+
+Task execution is simulated using FastAPI BackgroundTasks.
+
+When `/tasks/{id}/start` is called:
+
+- A TaskRun record is created (status = pending)
+- Background job updates status to running
+- On completion, task status becomes done or failed
+- Execution result is stored in the task record
+
 
 ### Migrations
 ```
