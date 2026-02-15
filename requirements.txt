@@ -25,3 +25,6 @@ pydantic-settings
 python-multipart
 psycopg[binary]
 alembic
+pytest
+httpx
+pytest-asyncio
