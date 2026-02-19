@@ -38,8 +38,12 @@ def client(db):
             yield db
         finally:
             pass
-
+    
     app.dependency_overrides[get_db] = override_get_db
-
+    
+    # ← підміняємо db_factory на тестову
+    from app.routers.tasks import set_db_factory
+    set_db_factory(TestingSessionLocal)
+    
     with TestClient(app) as c:
         yield c

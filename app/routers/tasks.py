@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query, BackgroundTasks
 from sqlalchemy.orm import Session
+import threading
 
 from app.deps import get_current_user, get_db
 from app.schemas.task import TaskCreate, TaskRead, TaskUpdate
@@ -12,6 +13,11 @@ from app.db.session import SessionLocal
 router = APIRouter(prefix="/tasks", tags=["tasks"])
 service = TaskService()
 run_service = TaskRunner()
+_db_factory = SessionLocal
+
+def set_db_factory(factory):
+    global _db_factory
+    _db_factory = factory
 
 @router.post("", response_model=TaskRead, status_code=status.HTTP_201_CREATED)
 def create_task(payload: TaskCreate, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
@@ -63,7 +69,6 @@ def task_update(
 @router.post("/{task_id}/start", status_code=status.HTTP_200_OK)
 def task_run(
     task_id: int,
-    background_tasks: BackgroundTasks,  # ← параметр від FastAPI
     db: Session = Depends(get_db),
     current_user = Depends(get_current_user)
 ):
@@ -73,12 +78,12 @@ def task_run(
     
     taskrun = run_service.create_run(db, task_id)
     
-    background_tasks.add_task( 
-        run_service.run_task,
-        SessionLocal,
-        task.id,
-        taskrun.id
+    thread = threading.Thread(
+        target=run_service.run_task,
+        args=(_db_factory, task.id, taskrun.id),
+        daemon=True
     )
+    thread.start()
     
     return {"run_id": taskrun.id, "status": "pending"}
 
