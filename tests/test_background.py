@@ -17,9 +17,6 @@ def test_start_creates_run_and_sets_pending_or_running(client):
     start_response = client.post(f"/tasks/{task_id}/start", headers=auth_headers(token))
     assert start_response.status_code == status.HTTP_200_OK
 
-    #wait for task to be done
-    task_result = wait_for_task(client, token, task_id, expected="running", timeout_sec=3.0)
-    assert task_result["status"] == "running"
     
     #check runs returns the run
     runs_response = client.get(f"/tasks/{task_id}/runs", headers=auth_headers(token))

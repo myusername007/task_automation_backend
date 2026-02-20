@@ -1,13 +1,15 @@
 from sqlalchemy.orm import Session
+from typing import Callable
 import time
 from datetime import datetime
 from app.db.models.task_run import TaskRun
 from app.db.models.task import Task
 
+
 class TaskRunner:
-    def run_task(self, db_factory, task_id: int, run_id: int) -> None:
+    def run_task(self, db_factory: Callable[[], Session], task_id: int, run_id: int) -> None:
         """Background job для виконання задачі"""
-        db: Session = db_factory()
+        db = db_factory()
         
         task_run = None
         task = None

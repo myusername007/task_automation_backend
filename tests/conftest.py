@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from app.main import app
 from app.db.base import Base
 from app.deps import get_db
+import app.routers.tasks as tasks_router
 
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test.db"
@@ -41,9 +42,8 @@ def client(db):
     
     app.dependency_overrides[get_db] = override_get_db
     
-    # ← підміняємо db_factory на тестову
-    from app.routers.tasks import set_db_factory
-    set_db_factory(TestingSessionLocal)
+
+    tasks_router.SessionLocal = TestingSessionLocal
     
     with TestClient(app) as c:
         yield c
