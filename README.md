@@ -15,13 +15,6 @@ API доступне за адресою: https://task-automation-backend.onrend
 
 Документація: https://task-automation-backend.onrender.com/docs
 
-## Приклад використання
-
-# Реєстрація
-curl -X POST https://task-automation-backend.onrender.com/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"username": "testuser", "password": "testpass"}'
-
 
 ### Features
 
