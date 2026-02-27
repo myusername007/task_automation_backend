@@ -29,3 +29,4 @@ pytest
 httpx
 pytest-asyncio
 psycopg2
+bcrypt
