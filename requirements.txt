@@ -29,4 +29,4 @@ pytest
 httpx
 pytest-asyncio
 psycopg2
-bcrypt
+bcrypt==4.0.1
