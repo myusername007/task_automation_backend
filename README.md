@@ -37,14 +37,13 @@ Console: `docker-compose up --build`
 Swagger: `http://localhost:8000/docs`
 
 ### Environment variables
-```
+
 | Variable | Description |
 |----------|-------------|
 | DATABASE_URL | PostgreSQL connection string |
 | SECRET_KEY | JWT signing secret |
 | ACCESS_TOKEN_EXPIRE_MINUTES | Token lifetime in minutes |
 
-```
 
 ### Typical API flow
 
