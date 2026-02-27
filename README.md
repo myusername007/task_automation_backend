@@ -9,6 +9,19 @@ task execution history, and administrative monitoring capabilities.
 
 Built with FastAPI, PostgreSQL, SQLAlchemy 2.x, and Docker.
 
+## 🚀 Live Demo
+
+API доступне за адресою: https://task-automation-backend.onrender.com
+
+Документація: https://task-automation-backend.onrender.com/docs
+
+## Приклад використання
+
+# Реєстрація
+curl -X POST https://task-automation-backend.onrender.com/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "testpass"}'
+
 
 ### Features
 
@@ -79,5 +92,7 @@ When `/tasks/{id}/start` is called:
 ```
 docker-compose exec api alembic upgrade head
 ```
+
+
 
 
